@@ -1,7 +1,9 @@
+using Application.Products.Queries.GetAll;
 using Domain.Repositories;
 using MediatR;
 using NSubstitute;
 using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace UnitTest
@@ -18,9 +20,13 @@ namespace UnitTest
         }
 
         [Fact]
-        public void GetAllProduct()
+        public async Task GetAllProduct()
         {
+            await Mediator.Send(Arg.Any<GetAllProduct>());
 
+            await Repository.GetAll();
+
+            await Repository.Received().GetAll();
         }
     }
 }

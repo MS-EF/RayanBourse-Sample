@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Domain.Repositories
 {
     public interface IGenericRepository<T> : IDisposable where T : BaseEntity
-    {    
-
+    {
+        Task<IEnumerable<T>> GetAll();
     }
 }
