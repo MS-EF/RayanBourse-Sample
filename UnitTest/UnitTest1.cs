@@ -1,9 +1,12 @@
+using Application.Products.Commands.Create;
 using Application.Products.Queries.GetAll;
+using Domain.Entities;
 using Domain.Repositories;
 using MediatR;
 using NSubstitute;
 using System;
 using System.Threading.Tasks;
+using UnitTest.Factory;
 using Xunit;
 
 namespace UnitTest
@@ -27,6 +30,20 @@ namespace UnitTest
             await Repository.GetAll();
 
             await Repository.Received().GetAll();
+        }
+
+        [Fact]
+        public async Task AddNewProduct()
+        {
+
+            var product = ProductFactory.Create();
+
+            await Mediator.Send(Arg.Any<CreateProduct>());
+            await Repository.Add(product);
+
+            await Repository.Received(1).Add(Arg.Is<Product>(p => p.Name == product.Name));
+            await Repository.Received(1).Add(Arg.Is<Product>(p => p.ManufactureEmail == product.ManufactureEmail));
+            await Repository.Received(1).Add(Arg.Is<Product>(p => p.ManufacturePhone == product.ManufacturePhone));
         }
     }
 }
