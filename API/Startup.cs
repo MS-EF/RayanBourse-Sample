@@ -1,4 +1,8 @@
+using Application.Products.Commands.Create;
+using Domain.Repositories;
 using Infrastructure.EF;
+using Infrastructure.EF.Repositories;
+using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -15,6 +19,7 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace API
@@ -46,6 +51,10 @@ namespace API
                     Configuration.GetConnectionString("DefaultConnection"),
                     b => b.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName)));
 
+            services.AddMediatR(typeof(CreateProduct).GetTypeInfo().Assembly);
+            services.AddAutoMapper(typeof(CreateProduct));
+
+            services.AddScoped<IProductRepository, ProductRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
