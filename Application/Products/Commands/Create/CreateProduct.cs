@@ -19,5 +19,8 @@ namespace Application.Products.Commands.Create
         public string ManufactureEmail { get; set; }
 
         public bool IsActive { get; set; }
+
+        public string AppUserId { get; set; }
+
     }
 }

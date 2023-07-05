@@ -17,9 +17,9 @@ namespace Infrastructure.EF.Repositories
             _context = context;
         }
 
-        public Task Add(T model)
+        public async Task Add(T model)
         {
-            throw new NotImplementedException();
+            await _context.Set<T>().AddAsync(model);
         }
 
         public void Dispose()
@@ -32,9 +32,10 @@ namespace Infrastructure.EF.Repositories
             return await _context.Set<T>().ToListAsync();
         }
 
-        public Task<bool> Save()
+        public async Task<bool> Save()
         {
-            throw new NotImplementedException();
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }

@@ -1,3 +1,4 @@
+using API.Helper;
 using Application.Products.Commands.Create;
 using Domain.Entities;
 using Domain.Repositories;
@@ -17,11 +18,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace API
@@ -38,8 +41,8 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAd"));
+            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //    .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAd"));
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -53,10 +56,14 @@ namespace API
                     Configuration.GetConnectionString("DefaultConnection"),
                     b => b.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName)));
 
+            
             services.AddMediatR(typeof(CreateProduct).GetTypeInfo().Assembly);
+            
             services.AddAutoMapper(typeof(CreateProduct));
 
             services.AddScoped<IProductRepository, ProductRepository>();
+
+            services.AddSingleton<JwtService>();
 
             services.AddIdentity<AppUser, IdentityRole>(o =>
             {
@@ -67,6 +74,25 @@ namespace API
                 o.Password.RequiredLength = 6;
             }).AddEntityFrameworkStores<AppDbContext>()
               .AddDefaultTokenProviders();
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+               .AddJwtBearer(options =>
+               {
+                   options.TokenValidationParameters = new TokenValidationParameters
+                   {
+                       ValidateIssuer = false,
+                       ValidateAudience = false,
+                       ValidateLifetime = true,
+                       ValidateIssuerSigningKey = true,
+
+                       IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                   };
+               });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
