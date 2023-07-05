@@ -11,12 +11,12 @@ using Xunit;
 
 namespace UnitTest
 {
-    public class UnitTest1
+    public class UnitTestProduct
     {
         public IMediator Mediator { get; private set; }
         public IProductRepository Repository { get; private set; }
 
-        public UnitTest1()
+        public UnitTestProduct()
         {
             Mediator = Substitute.For<IMediator>();
             Repository = Substitute.For<IProductRepository>();
