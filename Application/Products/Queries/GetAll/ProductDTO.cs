@@ -10,5 +10,8 @@ namespace Application.Products.Queries.GetAll
         public string ManufacturePhone { get; set; }
         public string ManufactureEmail { get; set; }
         public bool IsActive { get; set; }
+
+        public string AppUserId { get; set; }
+        public string AppUserName { get; set; }
     }
 }

@@ -16,8 +16,9 @@ namespace Application.Mapping
             CreateMap<string, string>().ConstructUsing(str => (str ?? "").Trim());
 
 
-            CreateMap<Product, ProductDTO>();
-                
+            CreateMap<Product, ProductDTO>()
+                .ForMember(q => q.AppUserName, q => q.MapFrom(q => q.AppUser.UserName));
+
 
         }
     }

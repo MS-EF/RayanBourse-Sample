@@ -1,4 +1,5 @@
 using Application.Products.Commands.Create;
+using Domain.Entities;
 using Domain.Repositories;
 using Infrastructure.EF;
 using Infrastructure.EF.Repositories;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -55,6 +57,16 @@ namespace API
             services.AddAutoMapper(typeof(CreateProduct));
 
             services.AddScoped<IProductRepository, ProductRepository>();
+
+            services.AddIdentity<AppUser, IdentityRole>(o =>
+            {
+                o.Password.RequireDigit = false;
+                o.Password.RequireLowercase = false;
+                o.Password.RequireUppercase = false;
+                o.Password.RequireNonAlphanumeric = false;
+                o.Password.RequiredLength = 6;
+            }).AddEntityFrameworkStores<AppDbContext>()
+              .AddDefaultTokenProviders();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

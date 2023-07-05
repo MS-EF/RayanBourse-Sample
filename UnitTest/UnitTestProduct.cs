@@ -22,15 +22,19 @@ namespace UnitTest
             Repository = Substitute.For<IProductRepository>();
         }
 
-        [Fact]
-        public async Task GetAllProduct()
+
+        [Theory]
+        [InlineData("")]
+        [InlineData("soheil")]
+        public async Task GetAllProduct(string userName)
         {
-            await Mediator.Send(Arg.Any<GetAllProduct>());
+            await Mediator.Send(Arg.Is<GetAllProduct>(new GetAllProduct(userName)));
 
-            await Repository.GetAll();
+            await Repository.GetAllWithUserName(userName);
 
-            await Repository.Received().GetAll();
+            await Repository.Received().GetAllWithUserName(Arg.Is<string>(q => q == userName));
         }
+
 
         [Fact]
         public async Task AddNewProduct()

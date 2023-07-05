@@ -22,7 +22,7 @@ namespace Application.Products.Queries.GetAll
         public async Task<IEnumerable<ProductDTO>> Handle(GetAllProduct request, CancellationToken cancellationToken)
         {
             return _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDTO>>
-                         (await _productRepository.GetAll());
+                        (await _productRepository.GetAllWithUserName(request.UserName));
         }
     }
 }

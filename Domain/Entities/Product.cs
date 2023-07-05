@@ -9,5 +9,8 @@ namespace Domain.Entities
         public string ManufacturePhone { get; set; }
         public DateTime ProduceDate { get; set; }
 
+        public string AppUserId { get; set; }
+        public AppUser AppUser { get; set; }
+
     }
 }

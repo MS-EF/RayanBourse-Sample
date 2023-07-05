@@ -20,9 +20,9 @@ namespace API.Controllers
         }
 
         [HttpGet()]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromQuery] string? userName)
         {
-            return Ok(await _mediator.Send(new GetAllProduct()));
+            return Ok(await _mediator.Send(new GetAllProduct(userName)));
         }
     }
 }

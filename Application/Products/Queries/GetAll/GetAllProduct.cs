@@ -8,6 +8,11 @@ namespace Application.Products.Queries.GetAll
 {
     public class GetAllProduct : IRequest<IEnumerable<ProductDTO>>
     {
+        public string UserName { get; private set; }
+        public GetAllProduct(string userName)
+        {
+            UserName = userName;
+        }
 
     }
 }
