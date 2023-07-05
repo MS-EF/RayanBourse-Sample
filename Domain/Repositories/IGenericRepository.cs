@@ -12,6 +12,7 @@ namespace Domain.Repositories
         Task<IEnumerable<T>> GetAll();
 
         Task Add(T model);
+        Task Delete(int id);
 
         Task<bool> Save();
 

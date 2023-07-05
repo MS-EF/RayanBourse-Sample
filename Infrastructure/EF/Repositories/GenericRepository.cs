@@ -37,5 +37,15 @@ namespace Infrastructure.EF.Repositories
             await _context.SaveChangesAsync();
             return true;
         }
+
+        public async Task Delete(int id)
+        {
+            var model = await _context.Set<T>().FirstOrDefaultAsync();
+            if (model is not null)
+            {
+                model.IsActive = false;
+                _context.Entry(model).State = EntityState.Modified;
+            }
+        }
     }
 }

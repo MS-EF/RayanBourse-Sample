@@ -1,5 +1,6 @@
 ﻿using API.Helper;
 using Application.Products.Commands.Create;
+using Application.Products.Commands.Delete;
 using Application.Products.Queries.GetAll;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -40,6 +41,12 @@ namespace API.Controllers
                                                 .FirstOrDefault(q => q.Key == ClaimTypes.NameIdentifier).Value;
             
             return Ok(await _mediator.Send(command));
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            return Ok(await _mediator.Send(new DeleteProduct(id)));
         }
     }
 }
