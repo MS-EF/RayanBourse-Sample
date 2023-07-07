@@ -7,5 +7,7 @@ namespace Domain.Repositories
     public interface IProductRepository : IGenericRepository<Product>
     {
         Task<IEnumerable<Product>> GetAllWithUserName(string userName = "");
+
+        Task<string> GetOwnerId(int productId);
     }
 }

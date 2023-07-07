@@ -24,5 +24,10 @@ namespace Infrastructure.EF.Repositories
                 query = query.Where(q => q.AppUser.UserName.ToLower().Contains(userName.ToLower()));
             return await query.ToListAsync();
         }
+
+        public async Task<string> GetOwnerId(int productId)
+        {
+            return (await _context.Products.Select(q => new { q.AppUserId, q.ID }).FirstOrDefaultAsync(q => q.ID == productId)).AppUserId;
+        }
     }
 }

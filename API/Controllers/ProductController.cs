@@ -1,7 +1,10 @@
 ﻿using API.Helper;
+using API.Attributes;
 using Application.Products.Commands.Create;
 using Application.Products.Commands.Delete;
 using Application.Products.Queries.GetAll;
+using Domain.Repositories;
+using Infrastructure.EF.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -44,6 +47,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [OwnerAccess]
         public async Task<IActionResult> Delete(int id)
         {
             return Ok(await _mediator.Send(new DeleteProduct(id)));
